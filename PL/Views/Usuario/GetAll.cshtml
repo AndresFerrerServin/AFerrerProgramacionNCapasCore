@@ -1,0 +1,157 @@
+﻿@model ML.Usuario
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <h2>Usuario</h2>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            @using(Html.BeginForm("GetAll","Usuario",FormMethod.Post, new {enctype = "multipart/form-data" }))
+            {
+                
+
+                <div class="row">
+                    <div class="col-md-3">
+                        @Html.Label("Nombre")
+                        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" , @placeholder="Andres", autocomplete = "on" }) 
+
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Label("ApellidoPaterno")
+
+                        
+                        @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control", @placeholder="Ferrer", autocomplete = "on" })
+                            
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Label("ApellidoMaterno")
+
+                        
+                        @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control", @placeholder="Servin", autocomplete = "on" })
+ 
+                    </div>
+                </div>
+
+             
+                <input class="btn btn-primary" type="submit" value="Enviar">
+                
+            }
+
+        </div>
+
+     
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Seleccione una materia para editarlo o + para agregar...</h5>
+            <hr />
+        </div>
+
+
+    <div class="row">
+        <div style="float:left;">
+            @Html.ActionLink("+", "Form", "Usuario", htmlAttributes: new { @class = "btn btn-success" })
+
+        </div>
+        @if (Model.Usuarios == null)
+        {
+            <div class="p-3 mb-2 bg-danger text-white">Aun no hay materias registradas</div>
+        }
+        else
+        {
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr class="table-secondary">
+                        <td class="text-center">Editar</td>
+
+                        <td style ="display :none">IdUsuario</td>
+                        <td class="text-center">UserName</td>
+                        <td class="text-center">Nombre</td>
+
+                        <td class="text-center">Email</td>
+                        <td class="text-center">Password</td>
+                        <td class="text-center">FechaNacimiento</td>
+                        <td class="text-center">Sexo</td>
+                        <td class="text-center">Telefono</td>
+                        <td class="text-center">Celular</td>
+                        <td class="text-center">CURP</td>
+                        <td class="text-center">Imagen</td>
+                        <td style ="display :none">IdRol</td>
+                        <td class="text-center">Rol</td>
+                        <td class="text-center">Direccion</td>
+                        <td class="text-center">Estatus</td>
+                        <td class="text-center">Eliminar</td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (ML.Usuario usuario in Model.Usuarios)
+                    {
+                        <tr>
+                            <td style ="text-align: center; vertical-align: middle;"><a class="btn btn-warning glyphicon" href="@Url.Action("Form", "Usuario", new { IdUsuario = usuario.IdUsuario })"><i class="bi bi-pencil-square" style="color: ivory"></i></a></td>
+                            
+
+                            <td style ="display :none">@usuario.IdUsuario</td>
+                            <td class="text-center">@usuario.UserName</td>
+                            <td class="text-center">@usuario.Nombre @usuario.ApellidoPaterno @usuario.ApellidoMaterno</td>
+                            <td class="text-center">@usuario.Email</td>
+                            <td class="text-center">@usuario.Password</td>
+                            <td class="text-center">@usuario.FechaNacimiento.ToString()</td>
+                            <td class="text-center">@usuario.Sexo</td>
+                            <td class="text-center">@usuario.Telefono</td>
+                            <td class="text-center">@usuario.Celular</td>
+                            <td class="text-center">@usuario.CURP</td>
+
+
+                            <td class="text-center">
+                            @if (usuario.Imagen !=null)
+                        {
+                            <img class="card-ing" src="data:image/*;base64,@usuario.Imagen"style="width:150px ; height:150px" />
+                        }
+                            else
+                        {
+                             <img class="card-ing" src="~/Imagenes/UsuarioPorDefecto.jpg" style="width:150px ; height:150px" />
+                        }
+
+                            </td>
+
+
+
+                            <td style ="display :none">@usuario.Rol.IdRol</td>
+                            <td class="text-center">@usuario.Rol.Nombre</td>
+                            <td class="text-center">@usuario.Direccion.Calle @usuario.Direccion.NumeroInterior @usuario.Direccion.NumeroExterior </td>
+
+
+                            <td class="text-center">
+
+                            @if(usuario.Estatus)
+                            {
+                                    <a href=@Url.Action("UpdateEstatus","Usuario",new{ IdUsuario =@usuario.IdUsuario })>
+                                        <img src=~/Imagenes/ON.jpg  style="width:100px ; height:50px" /> </a>
+
+                                    
+                                }
+                                else
+                                {
+                                     <a href=@Url.Action("UpdateEstatus","Usuario",new{ IdUsuario = @usuario.IdUsuario })>
+                                        <img src=~/Imagenes/OFF.jpg style="width:100px ; height:50px" /> </a>
+                                }                          
+                            </td>
+
+                            
+                            <td style ="text-align: center; vertical-align: middle;"><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("Delete", "Usuario", new { IdUsuario= usuario.IdUsuario})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"><i class="bi bi-eraser-fill" style="color: mintcream"></i></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

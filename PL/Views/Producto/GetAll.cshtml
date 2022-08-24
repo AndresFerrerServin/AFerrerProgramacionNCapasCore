@@ -1,0 +1,248 @@
+﻿@model ML.Producto
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <div class="row">
+        <h2>Producto</h2>
+    </div>
+
+     <div class="row">
+        <div class="col-md-12">
+            @using(Html.BeginForm("GetAll","Producto",FormMethod.Post, new {enctype = "multipart/form-data" }))
+            {
+                
+
+                <div class="row">
+                    <div class="col-md-3">
+                        @Html.Label("Nombre")
+                        <div class="input-group mb-3">
+                        
+                        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" , @placeholder="Sabritas", autocomplete = "on" }) 
+                       
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        @Html.Label("Area")
+                     <div class="input-group mb-3">
+                        
+                        @Html.DropDownListFor(model => model.Departamento.Area.IdArea, new SelectList(Model.Departamento.Area.Areas, "IdArea", "Nombre"), "Selecciona un Area", new { @class = "form-control", @id = "ddlArea" })
+                        
+                     </div>
+                    </div>
+
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.Departamento.Departamentos)
+                        <div class="input-group mb-3">
+                            
+                                @if (Model.Departamento.Departamentos == null)
+                                {
+                                    @Html.DropDownListFor(model => model.Departamento.IdDepartamento, new SelectList(string.Empty, "Value", "Text"), "Selecciona una opción", new { @class = "form-control", @id = "ddlDepartamento" })
+                                    @Html.ValidationMessageFor(model => model.Departamento.IdDepartamento)
+                                }
+                                else
+                                {
+                                    @Html.DropDownListFor(model => model.Departamento.IdDepartamento, new SelectList(Model.Departamento.Departamentos, "IdDepartamento", "Nombre"), "Selecciona una opción", new { @class = "form-control", @id = "ddlDepartamento" })
+                                    @Html.ValidationMessageFor(model => model.Departamento.IdDepartamento)
+                                }
+                        </div>
+                    </div>  
+
+                </div>
+
+             
+                <input class="btn btn-primary" type="submit" value="Enviar">
+                
+            }
+
+        </div>
+
+     
+    </div>
+
+    <div class="container">
+        <div class="col-md-12">
+            @using(Html.BeginForm("CargaMasiva","Producto",FormMethod.Post, new {enctype = "multipart/form-data" }))
+            {
+
+                 <div class="col-md-3">
+         
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-archive"></i></span>
+                        <input id="Archivo" type='file' class="form-control" name="Archivo" onchange="validateFile(this), readURL(this);  " />
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="Enviar">
+                    
+ 
+                 </div>
+            }
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Seleccione un Proveedor para editarla o el boton + para agregar un producto...</h5>
+            <hr />
+        </div>
+    </div>
+
+    <div class="row">
+        <div style="float:right;">
+            @Html.ActionLink("+", "Form", "Producto", htmlAttributes: new { @class = "btn btn-success" })
+
+        </div>
+
+        @if (Model.IdProducto == null)
+        {
+            <div class="p-3 mb-2 badge text-white">Aun no hay productos registrados </div>
+        }
+        else
+        {
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr class="table-secondary">
+                        <td class="text-center">Editar</td>
+
+                        <td style ="display :none">IdProducto</td>
+                        <td class="text-center">Nombre</td>
+                        <td class="text-center">PrecioUnitario</td>
+                        <td class="text-center">Stock</td>
+                        <td style ="display :none">IdProveedor</td>
+                        <td class="text-center">Proveedor</td>
+                        <td style ="display :none">IdDepartamento</td>
+                        <td class="text-center">Departamento</td>
+                        <td class="text-center">Descripcion</td>
+                        <td class="text-center">Imagen</td>
+                        <td style ="display :none">IdArea</td>
+                        <td class="text-center">Area</td>
+                        <td class="text-center">Eliminar</td>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (ML.Producto producto in Model.Productos)
+                    {
+                        <tr>
+                            
+                            <td style ="text-align: center; vertical-align: middle;"><a class="btn btn-warning glyphicon" href="@Url.Action("Form", "Producto", new { IdProducto = producto.IdProducto })"><i class="bi bi-pencil-square" style="color: ivory"></i></a></td>
+                            
+                            <td style ="display :none">@producto.IdProducto</td>
+                            <td class="text-center">@producto.Nombre</td>
+                            <td class="text-center">@producto.PrecioUnitario</td>
+                            <td class="text-center">@producto.Stock</td>
+                            <td style ="display :none">@producto.Proveedor.IdProveedor</td>
+                            <td class="text-center">@producto.Proveedor.Nombre</td>
+                            <td style ="display :none">@producto.Departamento.IdDepartamento</td>
+                            <td class="text-center">@producto.Departamento.Nombre</td>
+                            <td class="text-center">@producto.Descripcion</td>
+
+
+
+
+                            <td class="text-center">
+                            @if (producto.Imagen !=null)
+                        {
+                            <img class="card-ing" src="data:image/*;base64,@producto.Imagen"style="width:150px ; height:150px" />
+                        }
+                            else
+                        {
+                             <img class="card-ing" src="~/Imagenes/UsuarioPorDefecto.jpg" style="width:150px ; height:150px" />
+                        }
+
+                            
+                            
+                            </td>
+
+
+
+                            <td style ="display :none">@producto.Departamento.Area.IdArea</td>
+                            <td class="text-center">@producto.Departamento.Area.Nombre</td>
+
+
+ 
+                            <td style ="text-align: center; vertical-align: middle;"><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("Delete", "Producto", new { IdProducto= producto.IdProducto})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"><i class="bi bi-eraser-fill" style="color: mintcream"></i></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+
+    </div>
+
+</div>
+
+
+@section Scripts
+{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+    <script type="text/javascript">
+    
+     $(document).ready(function () {
+                $("#ddlArea").change(function () {
+                    $("#ddlDepartamento").empty();
+                    $.ajax({
+                        type: 'GET',
+                        url: '@Url.Action("DepartamentoGetByIdArea")',
+                        dataType: 'json',
+                        data: { IdArea: $("#ddlArea").val() },
+                        success: function (departamento) {
+                            $("#ddlDepartamento").append('<option value="0">'+ 'Seleccione una opción' + '</option>');
+                            $.each(departamento, function (i, departamento) {
+                                $("#ddlDepartamento").append('<option value="'
+                                                           + departamento.idDepartamento + '">'
+                                                           + departamento.nombre + '</option>');
+                            });
+                        },
+                        error: function (ex) {
+                            alert('Failed.' + ex);
+                        }
+                    });
+                });
+            });
+</script>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript">
+
+      function validateFile()
+      {
+                    var allowedExtension = ['txt', 'xlsx'];
+                    var fileExtension = document.getElementById('Archivo').value.split('.').pop().toLowerCase();
+                    var isValidFile = false;
+                        for(var index in allowedExtension) {
+                            if(fileExtension === allowedExtension[index]) {
+                                isValidFile = true;
+                                break;
+                            }
+                        }
+                        if(!isValidFile) {
+                            alert('Las extensiones permitidas son : *.' + allowedExtension.join(', *.'));
+                            document.getElementById('Archivo').value = ""
+                        }
+                        return isValidFile;
+                }
+                //function readURL(input) {
+                //if (input.files && input.files[0]) {
+                //    var reader = new FileReader();
+                //    reader.onload = function (e) {
+                //        $('#Img')
+                //          .attr('src', e.target.result);
+                //    };
+                //    reader.readAsDataURL(input.files[0]);
+                //}
+      }
+</script>
+
+
+
+ }

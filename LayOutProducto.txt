@@ -1,0 +1,6 @@
+Nombre|PrecioUnitario|Stock|Descripcion|IdProveedor|IdDepartamento|
+Zucaritas|39.00|3|Caja de carton azul|9|11|
+Corona|18.00|5|Botella de vidrio|11|8|
+Manchego|75.00|2|Pakt. 7KG|6|10|
+Fanta|10.00|3|Botella de plastico|5|5|
+Ciel|9.00|8|Botella de plastico|5|5|

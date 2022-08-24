@@ -1,0 +1,69 @@
+﻿@model ML.Proveedor
+@{
+    ViewData["Title"] = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-ml-12">
+                <h3>@ViewBag.Titulo</h3>
+                <h3>Ingresa los datos</h3>
+                <hr />
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            @using(Html.BeginForm("Form","Proveedor",FormMethod.Post, new {enctype = "multipart/form-data" }))
+            {
+                <div class="row">
+                    <div class="col-md-3" style="display: none;">
+                        @Html.TextBoxFor(model => model.IdProveedor, new { @class = "hidden form-control", autocomplete = "off" })
+                    </div>
+
+                    <div class="col-md-3">
+                        @Html.LabelFor(model => model.Nombre)
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="bi bi-file-person-fill" style="color: midnightblue"></i></span>
+                            @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "txtNombre", @placeholder="Sabritas", autocomplete = "off" })
+                            @Html.ValidationMessageFor(model => model.Nombre, null, new { @class = "text-danger"})
+                        </div>
+                    </div>
+
+                     <div class="col-md-3">
+                        @Html.LabelFor(model => model.Telefono)
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="bi bi-file-person-fill" style="color: midnightblue"></i></span>
+                            @Html.TextBoxFor(model => model.Telefono, new { @class = "form-control", @id = "txtTelefono", @placeholder="555601734592", autocomplete = "off" })
+                            @Html.ValidationMessageFor(model => model.Telefono, null, new { @class = "text-danger"})
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="@ViewBag.Accion" class="btn btn-success" />
+                        </div>
+                    </div>
+
+
+                </div>
+            }
+         </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.ActionLink("Regresar","GetAll","Proveedor", htmlAttributes: new {@class = "btn btn-danger"})
+        </div>
+    </div>
+
+</div>
+
+

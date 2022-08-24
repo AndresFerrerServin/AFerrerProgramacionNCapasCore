@@ -1,0 +1,78 @@
+﻿@model ML.Producto
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Producto</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <h5>Selecciona un producto para agregar al carrito </h5>
+        <hr />
+    </div>
+</div>
+</hr>
+
+@using(Html.BeginForm("GetAll","VentaProducto",FormMethod.Post,new{enctype = "multipart/form-data"}))
+{
+    <div class="row">
+        @foreach (ML.Producto producto in Model.Productos)
+        {
+            <div class="col-mt-3 pt-3"> 
+                <div class="card text-black dg-dark border-success md-3 border-4" style="width: 18rem;"> 
+                    <img class="card-img-top" src="data:image/*;base64,@producto.Imagen" style="width:150px ; height:150px" />
+                    <div class="card-body"> 
+                        <h5 class = "card-title card-header text-center bg-secondary" id="pNombre">@producto.Nombre</h5>
+                        <p class="card-text" id="pCosto">Costo:@producto.PrecioUnitario</p>
+                        <p class="card-text" id="pDescripcion">Descripcion:@producto.Descripcion</p>
+                        <p class="card-text" style="display: none;" id="pIdProducto"> @producto.IdProducto</p>
+                        <a href="@Url.Action("CartPost","VentaProducto",new{IdProducto = producto.IdProducto,Nombre = producto.Nombre ,Costo = producto.PrecioUnitario ,Descripcion = producto.Descripcion})" class="btn btn-success">Añadir <i class="bi bi-cart3" style="color:black" ></i></a>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+}
+
+@section Scripts
+{
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+
+<script type="text/javascript">
+
+function CrearObjeto() 
+{
+    var producto = 
+    {
+    IdProducto: $('#pIdProducto').val(),
+    Costo: $('#pCosto'),
+    Nombre: $('#pNombre')
+    Descripcion: $('#pDescripcion')
+    }
+    Add(producto)
+}    
+
+function Add(producto) 
+{
+    $.ajax({
+        type: 'GET',
+        url: '@Url.Action("CartPost")',
+        dataType: 'json',
+        data: JSON.stringify(producto),
+        contentType: 'application/json; charset=utf-8',
+        success: function(result) {
+            $('#myModal').modal();
+            $('#ModalUpdate').modal('hide');
+            GetAll();
+        }
+    });
+};
+
+</script>
+
+}
+
+

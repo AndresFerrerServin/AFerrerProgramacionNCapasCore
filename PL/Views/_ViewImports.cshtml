@@ -1,0 +1,73 @@
+﻿@using PL
+@using PL.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="container">
+    <div class="row">
+        <h2>Producto</h2>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Seleccione un producto para editarla o el boton + para agregar un producto...</h5>
+            <hr />
+        </div>
+    </div>
+
+    <div class="row">
+        <div style="float:right;">
+            @Html.ActionLink("+", "Form", "Producto", htmlAttributes: new { @class = "btn btn-success" })
+
+        </div>
+
+        @if (Model.Productos == null)
+        {
+            <div class="p-3 mb-2 badge text-white">Aun no hay productos registrados </div>
+        }
+        else
+        {
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <td class="text-center">Editar</td>
+
+                        <td class="hidden">IdProducto</td>
+                        <td class="text-center">Nombre</td>
+                        <td class="text-center">Precio Unitario</td>
+                        <td class="text-center">Stock</td>
+                        <td class="hidden">IdProveedor</td>
+                        <td class="hidden">IdDepartamento</td>
+                        <td class="text-center">Descripcion</td>
+                        <td class="text-center">Proveedor</td>
+                        <td class="text-center">Departamento</td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (ML.Producto producto in Model.Productos)
+                    {
+                        <tr>
+                            <td class="text-center"><a class="btn btn-warning glyphicon glyphicon-edit" href="@Url.Action("Form", "Producto", new { IdProducto = producto.IdProducto })"></a></td>
+
+                            <td class="hidden">@producto.IdProducto</td>
+                            <td class="text-center">@producto.Nombre</td>
+                            <td class="text-center">@producto.PrecioUnitario</td>
+                            <td class="text-center">@producto.Stock</td>
+                            <td class="hidden">@producto.Proveedor.IdProveedor</td>
+                            <td class="hidden">@producto.Departamento.IdDepartamento</td>
+                            <td class="text-center">@producto.Descripcion</td>
+                            <td class="text-center">@producto.Proveedor.Nombre</td>
+                            <td class="text-center">@producto.Departamento.Nombre</td>
+
+                            <td class="text-center"><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("Delete", "Producto", new { IdProducto = producto.IdProducto })" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+
+    </div>
+
+</div>

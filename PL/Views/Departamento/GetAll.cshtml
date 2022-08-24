@@ -1,0 +1,68 @@
+﻿@model ML.Departamento
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <h2>Departamento</h2>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Seleccione un Departamento para editarla o el boton + para agregar un producto...</h5>
+            <hr />
+        </div>
+    </div>
+
+    <div class="row">
+        <div style="float:right;">
+            @Html.ActionLink("+", "Form", "Departamento", htmlAttributes: new { @class = "btn btn-success" })
+
+        </div>
+
+        @if (Model.Departamentos == null)
+        {
+            <div class="p-3 mb-2 badge text-white">Aun no hay productos registrados </div>
+        }
+        else
+        {
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr class="table-secondary">
+                        <td class="text-center">Editar</td>
+                        <td style ="display :none">IdDepartamento</td>
+                        <td class="text-center">Departamento</td>
+                        <td style ="display :none">IdArea</td>
+                        <td class="text-center">Area</td>
+                        <td class="text-center">Eliminar</td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (ML.Departamento departamento in Model.Departamentos)
+                    {
+                        <tr>
+                            <td style ="text-align: center; vertical-align: middle;"><a class="btn btn-warning glyphicon" href="@Url.Action("Form", "Departamento", new { IdDepartamento = departamento.IdDepartamento })"><i class="bi bi-pencil-square" style="color: ivory"></i></a></td>
+                            
+
+                            <td style ="display :none">@departamento.IdDepartamento</td>
+                            <td class="text-center">@departamento.Nombre</td>
+                            <td style ="display :none">@departamento.Area.IdArea</td>
+                            <td class="text-center">@departamento.Area.Nombre</td>
+                            
+
+                            <td style ="text-align: center; vertical-align: middle;"><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("Delete", "Departamento", new { IdDepartamento= departamento.IdDepartamento})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"><i class="bi bi-eraser-fill" style="color: mintcream"></i></a></td>
+                           
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+
+    </div>
+
+</div>

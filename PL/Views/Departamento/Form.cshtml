@@ -1,0 +1,65 @@
+﻿@model ML.Departamento
+@{
+    ViewData["Title"] = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-ml-12">
+                <h3>@ViewBag.Titulo</h3>
+                <h3>Ingresa los datos</h3>
+                <hr />
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            @using(Html.BeginForm("Form","Departamento",FormMethod.Post, new {enctype = "multipart/form-data" }))
+            {
+                <div class="row">
+                    <div class="col-md-3" style="display: none;">
+                        @Html.TextBoxFor(model => model.IdDepartamento, new { @class = "hidden form-control", autocomplete = "off" })
+                    </div>
+
+                    <div class="col-md-3">
+                        @Html.LabelFor(model => model.Nombre)
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="bi bi-file-person-fill" style="color: midnightblue"></i></span>
+                            @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "txtNombre", @placeholder="Linea Blanca", autocomplete = "off" })
+                            @Html.ValidationMessageFor(model => model.Nombre, null, new { @class = "text-danger"})
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        @Html.Label("Area")
+                     <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-star" style="color: midnightblue"></i></span>
+                        @Html.DropDownListFor(model => model.Area.IdArea, new SelectList(Model.Area.Areas, "IdArea", "Nombre"), "Selecciona un rol", new { @class = "form-control", @id = "ddlIdArea" })
+                        @Html.ValidationMessageFor(model => model.Area.IdArea)
+                     </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="@ViewBag.Accion" class="btn btn-success" />
+                        </div>
+                    </div>
+
+
+                </div>
+            }
+         </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.ActionLink("Regresar","GetAll","Departamento", htmlAttributes: new {@class = "btn btn-danger"})
+        </div>
+    </div>
+
+</div>

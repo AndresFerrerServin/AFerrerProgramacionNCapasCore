@@ -1,0 +1,69 @@
+﻿@model ML.Proveedor
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <h2>Proveedor</h2>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Seleccione un Proveedor para editarla o el boton + para agregar un producto...</h5>
+            <hr />
+        </div>
+    </div>
+
+    <div class="row">
+        <div style="float:right;">
+            @Html.ActionLink("+", "Form", "Proveedor", htmlAttributes: new { @class = "btn btn-success" })
+
+        </div>
+
+        @if (Model.IdProveedor == null)
+        {
+            <div class="p-3 mb-2 badge text-white">Aun no hay productos registrados </div>
+        }
+        else
+        {
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr class="table-secondary">
+                        <td class="text-center">Editar</td>
+
+                        <td style ="display :none">IdProveedor</td>
+                        <td class="text-center">Nombre</td>
+                        <td class="text-center">Telefono</td>
+                        <td class="text-center">Eliminar</td>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (ML.Proveedor proveedor in Model.Proveedores)
+                    {
+                        <tr>
+                            <td style ="text-align: center; vertical-align: middle;"><a class="btn btn-warning glyphicon" href="@Url.Action("Form", "Proveedor", new { IdProveedor = proveedor.IdProveedor })"><i class="bi bi-pencil-square" style="color: ivory"></i></a></td>
+                            
+
+                            <td style ="display :none">@proveedor.IdProveedor</td>
+                            <td class="text-center">@proveedor.Nombre</td>
+                            <td class="text-center">@proveedor.Telefono</td>
+                            
+                            
+
+                            
+                            <td style ="text-align: center; vertical-align: middle;"><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("Delete", "Proveedor", new { IdProveedor= proveedor.IdProveedor})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"><i class="bi bi-eraser-fill" style="color: mintcream"></i></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+
+    </div>
+
+</div>
